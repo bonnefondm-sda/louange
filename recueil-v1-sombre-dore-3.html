@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>YouthAlive — Soirée Louange</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --deep-navy: #0d1b3e;
+    --royal-blue: #1a3a7c;
+    --violet: #4a2080;
+    --gold: #d4a017;
+    --gold-light: #f0c842;
+    --cream: #fdf6e3;
+    --cream-dark: #f0e6c8;
+    --text-dark: #1a0f00;
+    --text-mid: #3d2b00;
+    --text-light: #8a7060;
+    --divider: rgba(212,160,23,0.25);
+    --shadow: rgba(0,0,0,0.5);
+  }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: var(--deep-navy);
+    font-family: 'Crimson Pro', Georgia, serif;
+    touch-action: pan-y;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 20%, rgba(74,32,128,0.4) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(26,58,124,0.5) 0%, transparent 60%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 30% 40%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 55% 10%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 75% 35%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 65%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 20% 75%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(2px 2px at 45% 55%, rgba(212,160,23,0.35) 0%, transparent 100%),
+      radial-gradient(2px 2px at 85% 20%, rgba(212,160,23,0.25) 0%, transparent 100%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* ===== HEADER ===== */
+  #header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 10px 16px 6px;
+    text-align: center;
+    background: linear-gradient(to bottom, rgba(13,27,62,0.98) 75%, transparent);
+  }
+
+  .brand-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 2px;
+  }
+
+  .flame-icon { width: 26px; height: 26px; }
+
+  .brand-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.05rem;
+    font-weight: 900;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-shadow: 0 0 18px rgba(212,160,23,0.5);
+  }
+
+  .brand-subtitle {
+    font-family: 'Cinzel', serif;
+    font-size: 0.52rem;
+    letter-spacing: 0.38em;
+    color: rgba(212,160,23,0.55);
+    text-transform: uppercase;
+  }
+
+  .event-title {
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.45);
+    margin-top: 2px;
+  }
+
+  /* ===== BOOK ===== */
+  #book-wrapper {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 72px 10px 66px;
+  }
+
+  #book {
+    position: relative;
+    width: 100%;
+    max-width: 460px;
+    height: 100%;
+  }
+
+  /* ===== PAGE ===== */
+  .page {
+    position: absolute;
+    inset: 0;
+    border-radius: 4px 14px 14px 4px;
+    overflow: hidden;
+    box-shadow: 4px 4px 24px rgba(0,0,0,0.6);
+  }
+
+  .page-inner {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--cream) 0%, var(--cream-dark) 100%);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Ruled lines */
+  .page-inner::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: repeating-linear-gradient(
+      to bottom, transparent, transparent 27px,
+      rgba(180,150,100,0.1) 27px, rgba(180,150,100,0.1) 28px
+    );
+    pointer-events: none; z-index: 0;
+  }
+
+  /* Left binding */
+  .page-inner::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; bottom: 0; width: 16px;
+    background: linear-gradient(to right, rgba(0,0,0,0.1), transparent);
+    pointer-events: none; z-index: 2;
+  }
+
+  /* ===== COVER ===== */
+  .cover .page-inner {
+    background: linear-gradient(155deg, #1a3a7c 0%, #0d1b3e 45%, #2a0a5e 100%);
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .cover .page-inner::before { background: radial-gradient(ellipse at 50% 30%, rgba(212,160,23,0.12) 0%, transparent 70%); }
+  .cover .page-inner::after { display: none; }
+
+  .cover-decoration {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(212,160,23,0.08);
+    pointer-events: none;
+  }
+
+  .cover-ornament {
+    font-size: 3.2rem;
+    margin-bottom: 10px;
+    color: var(--gold-light);
+    text-shadow: 0 0 18px rgba(240,200,66,0.5);
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { filter: drop-shadow(0 0 12px rgba(212,160,23,0.5)); }
+    50%       { filter: drop-shadow(0 0 28px rgba(212,160,23,0.9)); }
+  }
+
+  .cover-brand {
+    font-family: 'Cinzel', serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.45em;
+    color: var(--gold);
+    opacity: 0.75;
+    margin-bottom: 18px;
+    text-transform: uppercase;
+  }
+
+  .cover-main-title {
+    font-family: 'Cinzel', serif;
+    font-size: 2rem;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 6px;
+    text-shadow: 0 2px 16px rgba(0,0,0,0.4);
+  }
+
+  .cover-title-gold { display: block; color: var(--gold-light); }
+
+  .cover-divider {
+    width: 70px; height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    margin: 16px auto;
+  }
+
+  .cover-verse {
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-size: 0.84rem;
+    color: rgba(255,255,255,0.55);
+    max-width: 215px;
+    line-height: 1.6;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  .cover-verse cite {
+    display: block;
+    font-style: normal;
+    color: var(--gold);
+    font-size: 0.65rem;
+    margin-top: 8px;
+    letter-spacing: 0.1em;
+    font-family: 'Cinzel', serif;
+  }
+
+  .cover-count {
+    position: absolute;
+    bottom: 22px; left: 0; right: 0;
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.28em;
+    color: rgba(212,160,23,0.3);
+    text-transform: uppercase;
+  }
+
+  /* ===== INDEX ===== */
+  .index-page .page-inner { background: linear-gradient(135deg, var(--cream) 0%, var(--cream-dark) 100%); }
+
+  .index-header {
+    padding: 20px 22px 12px 26px;
+    border-bottom: 1px solid rgba(180,150,100,0.3);
+    flex-shrink: 0;
+    position: relative; z-index: 1;
+  }
+
+  .eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 0.5rem;
+    letter-spacing: 0.28em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    opacity: 0.8;
+  }
+
+  .index-main-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-dark);
+  }
+
+  .index-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 6px 22px 22px 26px;
+    position: relative; z-index: 1;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .index-list::-webkit-scrollbar { width: 3px; }
+  .index-list::-webkit-scrollbar-thumb { background: rgba(180,150,100,0.3); border-radius: 2px; }
+
+  .index-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 4px;
+    border-bottom: 1px solid rgba(180,150,100,0.12);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 0.12s;
+    border-radius: 4px;
+    margin: 1px 0;
+  }
+
+  .index-item:active { background: rgba(212,160,23,0.08); }
+
+  .index-num {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    color: var(--gold);
+    min-width: 18px;
+    text-align: right;
+    flex-shrink: 0;
+    opacity: 0.7;
+  }
+
+  .index-song-name {
+    font-family: 'Crimson Pro', serif;
+    font-size: 1rem;
+    color: var(--text-dark);
+    flex: 1;
+    line-height: 1.2;
+  }
+
+  .index-ref {
+    font-size: 0.56rem;
+    color: var(--text-light);
+    white-space: nowrap;
+  }
+
+  /* ===== SONG PAGE ===== */
+  .page-header {
+    padding: 16px 22px 10px 26px;
+    flex-shrink: 0;
+    position: relative; z-index: 1;
+    border-bottom: 1px solid rgba(180,150,100,0.3);
+  }
+
+  .song-counter {
+    font-family: 'Cinzel', serif;
+    font-size: 0.5rem;
+    letter-spacing: 0.24em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    opacity: 0.65;
+  }
+
+  .song-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    line-height: 1.15;
+    margin-bottom: 3px;
+  }
+
+  .song-meta {
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.65rem;
+    color: var(--text-light);
+    font-style: italic;
+  }
+
+  .gold-accent {
+    height: 2px; width: 50px;
+    background: linear-gradient(to right, var(--gold), transparent);
+    margin-top: 8px;
+  }
+
+  /* ===== LYRICS ===== */
+  .lyrics-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 13px 22px 22px 26px;
+    position: relative; z-index: 1;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .lyrics-scroll::-webkit-scrollbar { width: 3px; }
+  .lyrics-scroll::-webkit-scrollbar-thumb { background: rgba(180,150,100,0.3); border-radius: 2px; }
+
+  .lyric-section { margin-bottom: 16px; }
+
+  .section-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.5rem;
+    letter-spacing: 0.22em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    opacity: 0.7;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, rgba(212,160,23,0.25), transparent);
+  }
+
+  .lyric-lines {
+    font-family: 'Crimson Pro', serif;
+    font-size: 1.06rem;
+    line-height: 1.72;
+    color: var(--text-dark);
+  }
+
+  .lyric-lines.refrain {
+    font-style: italic;
+    font-weight: 600;
+    color: var(--royal-blue);
+  }
+
+  .lyric-lines.pont {
+    font-style: italic;
+    color: var(--violet);
+  }
+
+  /* ===== FOOTER ===== */
+  #footer {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 8px 16px 12px;
+    background: linear-gradient(to top, rgba(13,27,62,0.98) 75%, transparent);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-btn {
+    background: none;
+    border: 1px solid rgba(212,160,23,0.35);
+    color: var(--gold);
+    font-family: 'Cinzel', serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.15s;
+    -webkit-tap-highlight-color: transparent;
+    min-width: 76px;
+  }
+
+  .nav-btn:active { background: rgba(212,160,23,0.18); transform: scale(0.96); }
+  .nav-btn:disabled { opacity: 0.18; cursor: default; }
+
+  .page-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .dots { display: flex; gap: 5px; align-items: center; }
+
+  .dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: rgba(212,160,23,0.2);
+    transition: all 0.24s;
+  }
+
+  .dot.active {
+    width: 16px;
+    border-radius: 3px;
+    background: var(--gold);
+  }
+
+  .page-label {
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.6rem;
+    color: rgba(255,255,255,0.3);
+    max-width: 160px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .swipe-hint {
+    position: fixed;
+    bottom: 66px; left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.25);
+    z-index: 50;
+    animation: fade-hint 4s ease forwards;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  @keyframes fade-hint { 0%, 55% { opacity: 1; } 100% { opacity: 0; } }
+
+  #overlay {
+    position: fixed; inset: 0;
+    pointer-events: none; z-index: 200;
+    background: rgba(255,255,255,0.1);
+    opacity: 0; transition: opacity 0.2s;
+  }
+  #overlay.flash { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div id="header">
+  <div class="brand-logo">
+    <svg class="flame-icon" viewBox="0 0 24 30" fill="none">
+      <path d="M12 2C12 2 7 8 7 14C7 17.3 9.2 20 12 20C14.8 20 17 17.3 17 14C17 8 12 2 12 2Z" fill="#d4a017" opacity="0.9"/>
+      <path d="M12 8C12 8 9 12 9 15.5C9 17.4 10.3 19 12 19C13.7 19 15 17.4 15 15.5C15 12 12 8 12 8Z" fill="#f0c842"/>
+      <path d="M12 13C12 13 10.5 15 10.5 16.5C10.5 17.3 11.2 18 12 18C12.8 18 13.5 17.3 13.5 16.5C13.5 15 12 13 12 13Z" fill="white" opacity="0.7"/>
+    </svg>
+    <span class="brand-title">YOUTH ALIVE</span>
+    <svg class="flame-icon" viewBox="0 0 24 30" fill="none" style="transform:scaleX(-1)">
+      <path d="M12 2C12 2 7 8 7 14C7 17.3 9.2 20 12 20C14.8 20 17 17.3 17 14C17 8 12 2 12 2Z" fill="#d4a017" opacity="0.9"/>
+      <path d="M12 8C12 8 9 12 9 15.5C9 17.4 10.3 19 12 19C13.7 19 15 17.4 15 15.5C15 12 12 8 12 8Z" fill="#f0c842"/>
+    </svg>
+  </div>
+  <div class="brand-subtitle">Jeunesse Adventiste</div>
+  <div class="event-title">Soirée de Louange — Recueil de chants</div>
+</div>
+
+<div id="book-wrapper"><div id="book"></div></div>
+
+<div id="footer">
+  <button class="nav-btn" id="prevBtn" onclick="turnPage(-1)" disabled>◂ Préc.</button>
+  <div class="page-indicator">
+    <div class="dots" id="dots"></div>
+    <div class="page-label" id="pageLabel">Couverture</div>
+  </div>
+  <button class="nav-btn" id="nextBtn" onclick="turnPage(1)">Suiv. ▸</button>
+</div>
+
+<div id="overlay"></div>
+<div class="swipe-hint" id="swipeHint">← Glissez pour tourner les pages →</div>
+
+<script>
+const songs = [
+  { title: "Viens, ne tarde plus", ref: "JEM720 · Brian Doerksen", sections: [
+    { type:"refrain", label:"Refrain", lines:"Viens, ne tarde plus, adore.\nViens, ne tarde plus, donne ton cœur.\nViens tel que tu es, adore.\nViens tel que tu es devant ton Dieu. Viens." },
+    { type:"strophe", label:"Strophe", lines:"Un jour, toute langue dira : « Tu es Dieu. »\nUn jour, tout genou fléchira.\nMais le vrai trésor est pour ceux\nQui t'ont choisi dès aujourd'hui." }
+  ]},
+  { title: "Venez le célébrer", ref: "JEM516 · Patricia Morgan", sections: [
+    { type:"strophe", label:"Strophe", lines:"Venez le célébrer,\nSon grand amour, venez le chanter ;\nLe Fils de Dieu est venu donner la vie.\nNous te fêtons, ô Roi,\nCar tu nous fais partager ta joie,\nEt nous offrons, en ton honneur,\nUn chant d'amour, Seigneur." },
+    { type:"refrain", label:"Refrain", lines:"Venez le célébrer, célébrer,\nCélébrer, chanter,\nCélébrer, chanter notre Roi.\nVenez le célébrer, célébrer,\nCélébrer, chanter,\nCélébrer, chanter notre Roi." }
+  ]},
+  { title: "Quand je contemple", ref: "Maggie Blanchard", sections: [
+    { type:"strophe", label:"Strophe", lines:"Quand je regarde ta sainteté\nEt quand je contemple ta beauté,\nLes choses qui m'entourent\nNe valent plus rien pour moi.\nJe découvre la joie de te chanter,\nDe déposer ma vie à tes pieds.\nIl n'y a que toi qui importe pour moi." },
+    { type:"refrain", label:"Refrain", lines:"Je veux t'adorer, oui t'adorer.\nMa raison de vivre, c'est de t'adorer.\nJe veux t'adorer, oui t'adorer." },
+    { type:"pont", label:"Pont", lines:"C'est la raison pour laquelle je vis,\nPour t'adorer, mon Dieu." }
+  ]},
+  { title: "Oh ! Jésus, mon Sauveur", ref: "JEM640 · Darlene Zschech", sections: [
+    { type:"strophe", label:"Strophe", lines:"Oh ! Jésus, mon Sauveur,\nSeigneur, nul n'est comme toi.\nJour après jour, je te louerai,\nCar ton amour est merveilleux.\nMon abri, mon refuge,\nMon réconfort, mon rocher,\nTout ce qui vit, ce que je suis,\nNe cesse de t'adorer." },
+    { type:"refrain", label:"Refrain", lines:"Chante au Seigneur,\nCrie de joie, terre entière.\nÀ Dieu la gloire, la puissance et l'honneur.\nLes monts s'inclinent et les flots rugissent\nÀ l'écho de ton nom.\nJe vois tes œuvres\nEt mon cœur crie de joie ;\nJe t'aimerai, je tiendrai par la foi.\nRien ne pourrait égaler\nTes promesses pour moi." }
+  ]},
+  { title: "Combien Dieu est grand", ref: "JEM870", sections: [
+    { type:"strophe", label:"Strophe 1", lines:"Le Roi dans sa beauté,\nVêtu de majesté,\nLa terre est dans la joie.\nSa gloire resplendit,\nL'obscurité s'enfuit\nAu son de sa voix." },
+    { type:"refrain", label:"Refrain", lines:"Combien Dieu est grand !\nChantons-le !\nCombien Dieu est grand,\nEt tous verront combien,\nCombien Dieu est grand !" },
+    { type:"strophe", label:"Strophe 2", lines:"Car d'âge en âge, il vit,\nLe temps lui est soumis,\nCommencement et fin.\nCéleste Trinité,\nDieu d'éternité,\nIl est l'Agneau divin." },
+    { type:"pont", label:"Pont", lines:"Son nom est tout-puissant,\nDigne de louanges.\nJe chanterai combien Dieu est grand.\nDe tout mon être alors s'élève un chant :\nDieu tout-puissant, que tu es grand !" }
+  ]},
+  { title: "Il est exalté", ref: "JEM352 · Twila Paris", sections: [
+    { type:"strophe", label:"Strophe A", lines:"Il est exalté,\nLe Roi est au-dessus des cieux.\nJe veux le louer.\nIl est élevé, à jamais exalté,\nEt je loue son saint nom." },
+    { type:"strophe", label:"Strophe B", lines:"Il est Seigneur,\nSa vérité régnera,\nTout l'univers\nSe réjouit dans son saint nom.\nIl est exalté,\nLe Roi est au-dessus des cieux." }
+  ]},
+  { title: "C'est si bon de louer son nom", ref: "Maggie Blanchard", sections: [
+    { type:"strophe", label:"Strophe", lines:"C'est si bon de louer son nom,\nDe chanter des louanges,\nGloire à son saint nom,\nDe proclamer sa fidélité\nChaque jour infiniment." },
+    { type:"refrain", label:"Refrain", lines:"La, la, la, la, la, la…" }
+  ]},
+  { title: "Christ est Roi", ref: "JEM3-850 · Richard Picotin", sections: [
+    { type:"strophe", label:"Strophe 1", lines:"Dans son amour, Dieu le Père\nEnvoya son Fils Jésus\nPour accorder la lumière\nÀ tous ceux qui sont perdus.\nIl descendit sur la terre,\nMais les hommes l'ont rejeté.\nIls l'ont cloué au Calvaire,\nMais Christ est ressuscité." },
+    { type:"refrain", label:"Refrain", lines:"Christ est Roi, Christ est Roi,\nChrist est Roi des rois.\nChrist est Roi, Christ est Roi,\nChrist est Roi des rois." },
+    { type:"strophe", label:"Strophe 2", lines:"Les croyants de tous les âges\nPortent son nom sur leur cœur ;\nDans l'épreuve, ils gardent courage\nCar leur Dieu est un sauveur.\nIls vont par toute la terre\nAnnoncer le Fils béni,\nFiers de porter leur bannière\nSur laquelle il est écrit :" },
+    { type:"strophe", label:"Strophe 3", lines:"Un jour, les chrétiens du monde\nSeront rassemblés par lui.\nIls sortiront de leurs tombes\nCar, en lui, ils ont la vie.\nIls formeront un royaume,\nLa terre sera leur pays.\nLeur hymne sera un psaume\nÀ la gloire du Messie." }
+  ]},
+  { title: "Je n'ai que toi", ref: "JEM2-427 · Billy Sprague · David Durham", sections: [
+    { type:"strophe", label:"Strophe 1", lines:"Je n'ai que toi, que toi dans le ciel,\nJe ne désire rien d'autre que toi sur la terre.\nSi je suis faible ou même si je tombe,\nDieu est le soutien de mon cœur." },
+    { type:"refrain", label:"Refrain", lines:"Dieu, tu es le soutien de mon cœur,\nMon héritage et mon plus grand bien.\nOh oui, Dieu, tu es le soutien de mon cœur,\nPrès de toi je me sens bien." },
+    { type:"strophe", label:"Strophe 2", lines:"Quand mon cœur était plein d'amertume,\nJe perdais la raison et je n'y voyais plus rien,\nMais Dieu s'approcha pour me saisir la main,\nDieu est le soutien de mon cœur." }
+  ]},
+  { title: "Tu es le chant", ref: "Tabitha", sections: [
+    { type:"strophe", label:"Strophe", lines:"Seigneur, tu es la force,\nL'amour qui brûle en moi\nComme une flamme,\nLe soutien de mon âme.\nSeigneur, tu es la joie\nQui brille sur mon visage,\nTu es ma gloire,\nTu es tout pour moi.\nEt quand je contemple\nLa grandeur de ton amour,\nMon être entier veut t'adorer." },
+    { type:"refrain", label:"Refrain", lines:"Tu es le chant que je chante,\nTu es la mélodie de mon cœur,\nÀ jamais le sujet de mes louanges.\nTu es le chant que je chante,\nTu es la mélodie de mon cœur,\nÀ jamais le sujet de mes louanges." }
+  ]},
+  { title: "Comme un phare", ref: "JEM2-391 · David Durham", sections: [
+    { type:"strophe", label:"Strophe 1", lines:"Sans ta lumière, Seigneur,\nQue ferions-nous dans ce monde ?\nPerdus au large, dans le brouillard,\nAu gré des vents.\nSans ta lumière, Seigneur,\nOù irions-nous dans ce monde ?\nLa mer est immense sans ta présence,\nQue ferions-nous ?" },
+    { type:"refrain", label:"Refrain", lines:"Comme un phare dans la nuit,\nTu brilles sur tes enfants,\nTu nous guides vers le port,\nAu cœur de ton amour." },
+    { type:"strophe", label:"Strophe 2", lines:"Sans ta lumière, Seigneur,\nQue serions-nous dans ce monde ?\nEn perdition, sans direction,\nCherchant la voie.\nSans ta lumière, Seigneur,\nOù irions-nous dans ce monde ?\nQue décider ? Qui écouter ?\nQue ferions-nous ?" }
+  ]},
+  { title: "Je continuerai", ref: "JEM2-530 · David Durham", sections: [
+    { type:"strophe", label:"Strophe 1", lines:"Dans ce désert de lassitude,\nOù mes pas m'ont amené,\nQuelque part, où ? Je ne sais.\nJ'ai dû lâcher ta main.\nDans ce silence, je veux me taire\nEt retrouver ta voix." },
+    { type:"refrain", label:"Refrain", lines:"Je continuerai à t'adorer,\nCar tu m'as aimé le premier.\nMalgré mes doutes et mes questions,\nTu restes le même.\nJe continuerai à te louer,\nÀ compter sur ta fidélité.\nDans le désert ou l'abondance,\nTu m'accompagnes." },
+    { type:"strophe", label:"Strophe 2", lines:"Dans ma détresse, ma solitude,\nJe sais que tu es resté ;\nCe n'est pas toi qui m'as laissé,\nJe voudrais revenir.\nDans ce silence, je veux me taire\nEt retrouver ta voix." }
+  ]},
+  { title: "Ouvre les yeux de mon cœur", ref: "JEM2-694 · Paul Baloche", sections: [
+    { type:"refrain", label:"Refrain", lines:"Ouvre les yeux de mon cœur,\nOuvre les yeux de mon cœur,\nJe désire te voir, je désire te voir.\nOuvre les yeux de mon cœur,\nOuvre les yeux de mon cœur,\nJe désire te voir, je désire te voir." },
+    { type:"strophe", label:"Strophe", lines:"Élevé au plus haut des cieux,\nRayonnant de l'éclat de ta gloire,\nRépands ton amour, ta force,\nAlors que nous chantons : « Tu es saint. »" },
+    { type:"pont", label:"Pont", lines:"Tu es saint, tu es saint,\nTu es saint, tu es saint,\nTu es saint, tu es saint,\nJe désire te voir." }
+  ]},
+  { title: "Dieu a une armée", ref: "JEM2-398 · Corinne Lafitte", sections: [
+    { type:"strophe", label:"Strophe 1", lines:"Dieu a une armée qui se lève\nPour lui obéir.\nDieu a une armée qui se lève\nPour le servir." },
+    { type:"refrain", label:"Refrain", lines:"Peuple de Dieu, lève tes mains\nPour l'adorer ;\nPeuple de Dieu, ouvre ta bouche ;\nDieu veut parler." },
+    { type:"strophe", label:"Strophe 2", lines:"C'est l'Esprit de Dieu qui la mène,\nQui mène ses pas.\nC'est l'Esprit de Dieu qui l'entraîne,\nL'entraîne au combat." },
+    { type:"strophe", label:"Strophe 3", lines:"À l'Agneau de Dieu soit la gloire\nDans les lieux très hauts.\nÀ l'Agneau de Dieu la victoire,\nVive notre héros !" }
+  ]},
+  { title: "Emmanuel", ref: "Exo", sections: [
+    { type:"refrain", label:"Refrain", lines:"Reçois l'adoration,\nTu es le Roi de gloire,\nNotre victoire,\nDigne es-tu, Seigneur,\nEmmanuel." },
+    { type:"strophe", label:"Strophe 1", lines:"Dieu de lumière, élevé dans les cieux,\nRempli de grâce et de paix,\nEnvironné de louange et de feu,\nGardien de l'éternité.\nPourquoi quitter ce palais de bonheur\nPour un sentier de misère ?\nPar quel amour les chemins de ton cœur\nOnt-ils su trouver nos prières ?" },
+    { type:"strophe", label:"Couplet", lines:"De cette foi que ton cœur a montrée\nJe veux puiser mon secours.\nSur le chemin que ta vie a tracé\nJe marcherai chaque jour.\nGarde mes yeux des attraits de ce monde,\nGarde-moi près de la croix.\nEn ce lieu saint où mon âme est féconde\nD'humilité et de joie." }
+  ]},
+  { title: "Je veux n'être qu'à toi", ref: "Exo", sections: [
+    { type:"strophe", label:"Strophe 1", lines:"Reçois de moi le parfum qui t'est dû,\nLa beauté de ton nom\nEn mon âme éperdue.\nJe veux n'être qu'à toi. Jésus, je t'aime." },
+    { type:"strophe", label:"Strophe 2", lines:"Reçois du peu que je trouve à donner,\nTout l'amour que mes yeux\nN'ont pas su te montrer.\nJe veux n'être qu'à toi. Jésus, je t'aime." },
+    { type:"refrain", label:"Refrain", lines:"Rien n'est plus beau que ton nom.\nRien n'est plus saint que le sang du pardon.\nJe veux n'être qu'à toi, Jésus mon Roi." },
+    { type:"strophe", label:"Strophe 3", lines:"Je ne veux rien que vouloir te louer,\nAdorer ton saint nom et ta fidélité.\nJe veux n'être qu'à toi. Jésus, je t'aime." },
+    { type:"strophe", label:"Strophe 4", lines:"Je veux porter et laver à ta croix\nLes pensées de mon cœur\nDans le cœur de tes voies.\nJe veux n'être qu'à toi. Jésus, je t'aime." }
+  ]},
+  { title: "La bonté de Dieu", ref: "Bethel Music · Jenn Johnson", sections: [
+    { type:"strophe", label:"Strophe 1", lines:"Je t'aime, Seigneur,\nTa bonté ne faillit jamais.\nTous les jours\nTu me tiens dans tes mains.\nDès que je me réveille\nJusqu'à mon coucher,\nJe chanterai la bonté de Dieu." },
+    { type:"refrain", label:"Refrain", lines:"Toute ma vie tu as été bon,\nToute ma vie tu as été fidèle.\nAvec le souffle qui est en moi\nJe chanterai la bonté de Dieu." },
+    { type:"strophe", label:"Strophe 2", lines:"J'aime ta voix,\nTu me conduis dans les épreuves.\nDans les ténèbres,\nTu restes auprès de moi.\nJe te connais comme mon Père\nEt comme un ami,\nEt j'ai vécu dans la bonté de Dieu." },
+    { type:"pont", label:"Pont", lines:"Ta bonté court après, court après moi.\nJe te donne ma vie, j'abandonne tout,\nJe me soumets à toi.\nTa bonté court après, court après moi." }
+  ]}
+];
+
+const pageList = [];
+pageList.push({ type: 'cover' });
+pageList.push({ type: 'index' });
+songs.forEach((song, i) => pageList.push({ type: 'song', song, num: i + 1 }));
+pageList.push({ type: 'instagram' });
+
+const pages = [];
+let currentPage = 0, isAnimating = false;
+
+function buildPages() {
+  const book = document.getElementById('book');
+  book.innerHTML = '';
+  pageList.forEach((p, i) => {
+    const el = document.createElement('div');
+    el.className = 'page'; el.dataset.index = i;
+    if (p.type === 'cover') {
+      el.classList.add('cover');
+      el.innerHTML = `<div class="page-inner">
+        <div class="cover-decoration" style="width:210px;height:210px;top:-58px;right:-58px;"></div>
+        <div class="cover-decoration" style="width:330px;height:330px;top:-115px;right:-115px;"></div>
+        <div class="cover-ornament">♪ ♫ ♪</div>
+        <div class="cover-brand">Youth Alive · Jeunesse Adventiste</div>
+        <h1 class="cover-main-title">Soirée de<span class="cover-title-gold">Louange</span></h1>
+        <div class="cover-divider"></div>
+        <p class="cover-verse">« Chantez à l'Éternel un cantique nouveau, chantez à l'Éternel, vous tous, habitants de la terre ! »<cite>Psaume 96 : 1</cite></p>
+        <div class="cover-count">${songs.length} chants · Gloire à Dieu</div>
+      </div>`;
+    } else if (p.type === 'index') {
+      el.classList.add('index-page');
+      const items = songs.map((s, idx) => `
+        <div class="index-item" onclick="goToSong(${idx+2})">
+          <span class="index-num">${idx+1}</span>
+          <div class="index-song-name">${s.title}</div>
+          <div class="index-ref">${s.ref}</div>
+        </div>`).join('');
+      el.innerHTML = `<div class="page-inner"><div class="index-header"><div class="eyebrow">Programme</div><div class="index-main-title">Table des matières</div></div><div class="index-list">${items}<div class="index-item" onclick="goToSong(${songs.length + 2})" style="margin-top:6px;border-bottom:none;border-top:1px solid rgba(212,160,23,0.15);padding-top:12px;"><span class="index-num" style="color:var(--gold);font-size:0.85rem;">✦</span><div class="index-song-name" style="font-style:italic;color:var(--gold);font-size:0.95rem;">Partage ce que tu as vécu…</div></div></div></div>`;
+    } else if (p.type === 'song') {
+      el.classList.add('song-page');
+      const s = p.song;
+      const sHTML = s.sections.map(sec => {
+        let cls = 'lyric-lines';
+        if (sec.type==='refrain') cls += ' refrain';
+        if (sec.type==='pont') cls += ' pont';
+        return `<div class="lyric-section"><div class="section-label">${sec.label}</div><div class="${cls}">${sec.lines.split('\n').join('<br>')}</div></div>`;
+      }).join('');
+      el.innerHTML = `<div class="page-inner"><div class="page-header"><div class="song-counter">Chant ${p.num} sur ${songs.length}</div><div class="song-title">${s.title}</div><div class="song-meta">${s.ref}</div><div class="gold-accent"></div></div><div class="lyrics-scroll">${sHTML}</div></div>`;
+    } else if (p.type === 'instagram') {
+      el.classList.add('insta-page');
+      el.innerHTML = `<div class="page-inner" style="align-items:center;justify-content:center;text-align:center;padding:36px 28px;background:linear-gradient(155deg,#1a3a7c 0%,#0d1b3e 45%,#2a0a5e 100%);">
+        <div style="font-size:2.6rem;margin-bottom:16px;letter-spacing:0.15em;">♪ ♫ ♪</div>
+        <div style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.35em;color:rgba(212,160,23,0.7);text-transform:uppercase;margin-bottom:20px;">Merci d'être là</div>
+        <h2 style="font-family:'Cinzel',serif;font-size:1.45rem;font-weight:700;color:#fff;line-height:1.2;margin-bottom:10px;">Comment as-tu vécu<br>cette soirée ?</h2>
+        <div style="width:50px;height:1px;background:linear-gradient(to right,transparent,rgba(212,160,23,0.6),transparent);margin:18px auto;"></div>
+        <p style="font-family:'Crimson Pro',serif;font-style:italic;font-size:0.92rem;color:rgba(255,255,255,0.55);line-height:1.7;max-width:220px;margin:0 auto 28px;">Partage ton ressenti, une prière, un mot… Envoie-nous un message sur Instagram.</p>
+        <a href="https://www.instagram.com/youthalivereunion/" target="_blank"
+          style="display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);color:#fff;font-family:'Cinzel',serif;font-size:0.72rem;letter-spacing:0.12em;font-weight:700;padding:13px 24px;border-radius:30px;text-decoration:none;box-shadow:0 4px 20px rgba(0,0,0,0.35);transition:transform 0.15s;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          @youthalivereunion
+        </a>
+        <p style="font-family:'Crimson Pro',serif;font-size:0.7rem;color:rgba(255,255,255,0.2);margin-top:24px;letter-spacing:0.05em;">Message privé ou commentaire, tout est bienvenu ♡</p>
+      </div>`;
+    }
+    book.appendChild(el); pages.push(el);
+  });
+  renderPage(); buildDots();
+}
+
+function buildDots() {
+  const c = document.getElementById('dots'); c.innerHTML = '';
+  for (let i = 0; i < Math.min(pageList.length, 11); i++) { const d = document.createElement('div'); d.className = 'dot'; c.appendChild(d); }
+}
+
+function renderPage() {
+  pages.forEach((el, i) => {
+    if (i === currentPage) { el.style.display=''; el.style.zIndex='5'; }
+    else if (i === currentPage+1) { el.style.display=''; el.style.zIndex='3'; }
+    else el.style.display='none';
+  });
+  document.getElementById('prevBtn').disabled = currentPage === 0;
+  document.getElementById('nextBtn').disabled = currentPage === pageList.length-1;
+  const dots = document.querySelectorAll('.dot'), dc = dots.length, total = pageList.length;
+  let start = Math.max(0, Math.min(currentPage - Math.floor(dc/2), total-dc));
+  dots.forEach((d,i) => d.classList.toggle('active', start+i===currentPage));
+  const p = pageList[currentPage];
+  document.getElementById('pageLabel').textContent = p.type==='cover'?'Couverture':p.type==='index'?'Sommaire':p.type==='instagram'?'Instagram':p.song.title;
+}
+
+function goToSong(idx) { if(idx>=0&&idx<pageList.length){currentPage=idx;renderPage();flash();} }
+
+function turnPage(dir) {
+  if (isAnimating) return;
+  const next = currentPage+dir;
+  if (next<0||next>=pageList.length) return;
+  isAnimating = true;
+  const cur=pages[currentPage], tgt=pages[next];
+  tgt.style.display=''; tgt.style.zIndex=dir>0?'4':'6';
+  if (dir>0) {
+    cur.style.cssText='transition:transform .4s ease,opacity .4s;transform:translateX(-10px) scale(.985);opacity:0';
+    tgt.style.cssText='opacity:0;transform:translateX(14px)';
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{ tgt.style.cssText='transition:transform .4s ease,opacity .4s;transform:translateX(0);opacity:1'; }));
+  } else {
+    cur.style.cssText='transition:transform .36s ease,opacity .36s;transform:translateX(10px) scale(.985);opacity:0';
+    tgt.style.cssText='opacity:0;transform:translateX(-10px)';
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{ tgt.style.cssText='transition:transform .36s ease,opacity .36s;transform:translateX(0);opacity:1'; }));
+  }
+  flash();
+  setTimeout(()=>{ cur.style.cssText=''; tgt.style.cssText=''; currentPage=next; renderPage(); isAnimating=false; }, 420);
+}
+
+function flash() { const o=document.getElementById('overlay'); o.classList.add('flash'); setTimeout(()=>o.classList.remove('flash'),200); }
+
+let tx=0,ty=0;
+document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY;},{passive:true});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>40)turnPage(dx<0?1:-1);},{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown')turnPage(1);if(e.key==='ArrowLeft'||e.key==='ArrowUp')turnPage(-1);});
+setTimeout(()=>{const h=document.getElementById('swipeHint');if(h)h.remove();},4500);
+buildPages();
+</script>
+</body>
+</html>
